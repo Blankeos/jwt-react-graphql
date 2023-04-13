@@ -1,3 +1,4 @@
+import "dotenv/config";
 import { AppDataSource } from "./data-source";
 import { User } from "./entity/User";
 
@@ -36,11 +37,16 @@ import { UserResolver } from "./UserResolver";
     schema: await buildSchema({
       resolvers: [UserResolver],
     }),
+    context: ({ req, res }) => ({
+      req,
+      res,
+    }),
   });
+
   await apolloServer.start();
   apolloServer.applyMiddleware({ app });
 
   app.listen(4000, () => {
-    console.log("Express server started");
+    console.log("Express server started at http://localhost:4000");
   });
 })();
